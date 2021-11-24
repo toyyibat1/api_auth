@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
+import 'signup_screen.dart';
+
 
 class SigninScreen extends StatefulWidget {
   const SigninScreen({ Key? key }) : super(key: key);
@@ -16,13 +18,13 @@ class SigninScreen extends StatefulWidget {
 
 class _SigninScreenState extends State<SigninScreen> {
   bool _isLoading = false;
-   var errorMsg;
+  var errorMsg;
+  //keys
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+//TextEditing controller
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final GlobalKey<ScaffoldState>_scaffoldKey=GlobalKey();
-
-    late ScaffoldMessengerState scaffoldMessenger;
 
     @override
   void dispose() {
@@ -73,39 +75,61 @@ class _SigninScreenState extends State<SigninScreen> {
             ),
             ElevatedButton(
               onPressed: (){
-                setState(() {
+                 if (_formKey.currentState!.validate()) {  
+                  if(_emailController.text.isEmpty || _passwordController.text.isEmpty ){
+                     final snackBar = SnackBar(content: Text('Please fill all fields'),);
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }   
+                  setState(() {
                   _isLoading = true;
-
                 });
-                if(_emailController.text.isEmpty||_passwordController.text.isEmpty)
-                  
-                login(_emailController.text, _passwordController.text);
+                  login(_emailController.text, _passwordController.text);
+                }
               }, 
               child: Text('Signin',  style: TextStyle(
                     color: Colors.white,
                     fontSize: 24.0,
-                  ),) )
+                  ),) ),
+                  SizedBox(height: 50,),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Dont have an account?', style: TextStyle(fontSize: 18)),
+                    SizedBox(width: 50,),
+                    GestureDetector(
+                      onTap: ()=>  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SignupScreen())),
+                      child: Text('Sigup', style: TextStyle(color: Colors.orange, fontSize: 18),))
+                  ],
+                ),
+              )
           ],),
       ),
     );
   }
   login(String email, pass) async{
-    FlutterSecureStorage _storage = FlutterSecureStorage();
+    // FlutterSecureStorage _storage = FlutterSecureStorage();
     Map data = {
       'email': email,
       'password': pass
     };
     var jsonResponse = null;
-    var response = await http.post(Uri.parse("https://reqres.in/api/login"), body: data);
+    var response = await http.post(Uri.parse("https://reqres.in/api/login"), 
+    headers: {
+          "Accept": "application/json",
+          // "Content-Type": "application/x-www-form-urlencoded"
+        },
+
+    body: data);
     if(response.statusCode == 200){
       jsonResponse = json.decode(response.body);
       print(jsonResponse);
       if(jsonResponse != null){
         setState(() {
           _isLoading = false;
-
         });
-        await _storage.write(key: "token", value: jsonResponse['token'] );
+        // await _storage.write(key: "token", value: jsonResponse['token'] );
 
     // final readregister = await _storage.read(key: "token");
          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => HomeScreen()), (Route<dynamic> route) => false);

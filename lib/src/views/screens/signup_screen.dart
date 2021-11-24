@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 import 'signin_screen.dart';
@@ -101,7 +101,7 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
   register(String email, pass) async{
-    FlutterSecureStorage _storage = FlutterSecureStorage();
+    // FlutterSecureStorage _storage = FlutterSecureStorage();
     Map data = {
       'email': email,
       'password': pass
@@ -122,7 +122,7 @@ class _SignupScreenState extends State<SignupScreen> {
         setState(() {
           _isLoading = false;
         });
-        await _storage.write(key: "token", value: jsonResponse['token'] );
+        // await _storage.write(key: "token", value: jsonResponse['token'] );
 
     // final readregister = await _storage.read(key: "token");
          Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SigninScreen()));
