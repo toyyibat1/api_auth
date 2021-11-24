@@ -78,10 +78,7 @@ class _SigninScreenState extends State<SigninScreen> {
 
                 });
                 if(_emailController.text.isEmpty||_passwordController.text.isEmpty)
-                  {
-                    Scaffold.of(context).showSnackBar(const SnackBar(content:Text("Please Fill all fileds")));
-                    return;
-                  }
+                  
                 login(_emailController.text, _passwordController.text);
               }, 
               child: Text('Signin',  style: TextStyle(

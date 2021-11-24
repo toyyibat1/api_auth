@@ -24,7 +24,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  late ScaffoldMessengerState scaffoldMessenger;
+  // late ScaffoldMessengerState scaffoldMessenger;
 
   @override
   void dispose() {
@@ -43,7 +43,7 @@ class _SignupScreenState extends State<SignupScreen> {
       body: Form(
         key: _formKey,
         child: _isLoading ?
-        Center(child: CircularProgressIndicator())
+          Center(child: CircularProgressIndicator())
         :Column(
           children: [
             Padding(
@@ -76,7 +76,11 @@ class _SignupScreenState extends State<SignupScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                if (_formKey.currentState!.validate()) {     
+                if (_formKey.currentState!.validate()) {  
+                  if(_emailController.text.isEmpty || _passwordController.text.isEmpty ){
+                     final snackBar = SnackBar(content: Text('Please fill all fields'),);
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }   
                   setState(() {
                   _isLoading = true;
                 });
