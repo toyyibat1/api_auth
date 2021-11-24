@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:api_auth/src/views/screens/main_code.dart';
 import 'package:api_auth/src/views/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.orange,
       ),
-      home: SignupScreen(),
+      home: MyListScreen(),
     );
   }
 }

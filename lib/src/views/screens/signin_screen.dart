@@ -90,7 +90,6 @@ class _SigninScreenState extends State<SigninScreen> {
                     color: Colors.white,
                     fontSize: 24.0,
                   ),) ),
-                  SizedBox(height: 50,),
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Row(
